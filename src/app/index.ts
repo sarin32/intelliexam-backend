@@ -3,6 +3,7 @@ import {bodyParser} from '@koa/bodyparser';
 import * as cors from '@koa/cors';
 import {PORT} from './config/config';
 import {router} from './api';
+import {errorMiddleware} from './api/middlewares/error-handler.middleware';
 
 export class Server {
   app: Koa<Koa.DefaultState, Koa.DefaultContext>;
@@ -20,10 +21,9 @@ export class Server {
     // bodyparser middleware
     this.app.use(bodyParser());
 
+    this.app.use(errorMiddleware);
     // attach router
     this.app.use(router.routes());
-
-    this.listen();
   }
 
   public listen() {
