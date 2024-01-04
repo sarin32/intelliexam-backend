@@ -5,12 +5,12 @@ import {userService} from '../../services';
 
 const signUpSchema = Joi.object({
   name: Joi.string().trim().min(3).max(20).required(),
-  email: Joi.string().email().required(),
+  email: Joi.string().trim().email().required(),
   password: Joi.string().min(6).max(30).required(),
 });
 
 const signInSchema = Joi.object({
-  email: Joi.string().email().required(),
+  email: Joi.string().trim().email().required(),
   password: Joi.string().min(6).max(30).required(),
 });
 
