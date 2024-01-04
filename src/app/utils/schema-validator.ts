@@ -1,7 +1,7 @@
 import * as Joi from 'joi';
 
-export function validateObject(schema: Joi.ObjectSchema, data: unknown) {
-  const {error}: Joi.ValidationResult = schema.validate(data, {
+export function validateObject(schema: Joi.Schema, data: unknown) {
+  const {error, value}: Joi.ValidationResult = schema.validate(data, {
     abortEarly: true,
     allowUnknown: true,
   });
@@ -9,4 +9,5 @@ export function validateObject(schema: Joi.ObjectSchema, data: unknown) {
   if (error) {
     throw error;
   }
+  return value
 }

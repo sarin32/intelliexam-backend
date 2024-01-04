@@ -9,4 +9,11 @@ if (process.env.NODE_ENV !== 'prod') {
 
 const env = process.env;
 
-export const PORT = env.PORT;
+export const PORT = Number(env.PORT!);
+
+export const DATABASE = {
+	URL: env.DATABASE_URL!,
+	DATABASE_NAME: env.DATABASE_NAME!,
+	MASTER_KEY: env.DATABASE_MASTER_KEY!,
+	KEY_BASE64: env.DATABASE_KEY_BASE64!
+}

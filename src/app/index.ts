@@ -4,6 +4,7 @@ import * as cors from '@koa/cors';
 import {PORT} from './config/config';
 import {router} from './api';
 import {errorMiddleware} from './api/middlewares/error-handler.middleware';
+import { connection } from './database';
 
 export class Server {
   app: Koa<Koa.DefaultState, Koa.DefaultContext>;
@@ -26,7 +27,9 @@ export class Server {
     this.app.use(router.routes());
   }
 
-  public listen() {
+  public async listen() {
+	await connection.startConnecion()
+	console.log('ESTABLISHED DATABASE CONNECTION');
     this.app.listen(PORT, () => {
       console.log('APP IS RUNNING ON PORT ', PORT);
     });
