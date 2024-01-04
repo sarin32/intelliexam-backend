@@ -7,16 +7,33 @@ type CreateUserParams = {
   salt: string;
 };
 
+type findUserByEmailParams = {
+  email: string;
+};
+
 class UserRepository {
   private readonly modal = userModel;
 
   async createUser({email, name, password, salt}: CreateUserParams) {
-    return await this.modal.insertOne({
+    const result = await this.modal.insertOne({
       email,
       name,
       password,
       salt,
     });
+    if (!result.acknowledged) {
+      throw new Error('Failed to create user');
+    }
+    return {
+      userId: result.insertedId,
+    };
+  }
+
+  async findUserByEmail({email}: findUserByEmailParams) {
+    const result = await this.modal.findOne({
+      email,
+    });
+    return result;
   }
 }
 

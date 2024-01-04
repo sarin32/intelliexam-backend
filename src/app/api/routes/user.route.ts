@@ -1,10 +1,11 @@
 import * as KoaRouter from '@koa/router';
-import {signup} from '../controllers/user.controller';
+import {signIn, signUp} from '../controllers/user.controller';
 
 const userRoute = new KoaRouter({
   prefix: '/user',
 });
 
-userRoute.post('/signup', signup);
+userRoute.post('/signup', signUp);
+userRoute.post('/signin', signIn);
 
 export default userRoute;

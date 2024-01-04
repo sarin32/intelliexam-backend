@@ -9,10 +9,20 @@ const signUpSchema = Joi.object({
   password: Joi.string().min(6).max(30).required(),
 });
 
-export async function signup(ctx: Context) {
+const signInSchema = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().min(6).max(30).required(),
+});
+
+export async function signUp(ctx: Context) {
   const {name, email, password} = validateObject(
     signUpSchema,
     ctx.request.body
   );
   ctx.body = await userService.signup({name, email, password});
+}
+
+export async function signIn(ctx: Context) {
+  const {email, password} = validateObject(signInSchema, ctx.request.body);
+  ctx.body = await userService.signIn({email, password});
 }
