@@ -9,5 +9,5 @@ export function validateObject(schema: Joi.Schema, data: unknown) {
   if (error) {
     throw error;
   }
-  return value
+  return value;
 }

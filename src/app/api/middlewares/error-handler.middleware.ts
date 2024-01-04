@@ -15,4 +15,3 @@ export async function errorMiddleware(ctx: Context, next: Next) {
     ctx.status = 500;
   }
 }
- 
