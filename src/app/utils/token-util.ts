@@ -3,16 +3,12 @@ import {SECRET_TOKEN} from '../config/config';
 
 export async function generateSignature(
   payload: object,
-  expiresIn = 600
+  expiresIn: number
 ): Promise<string> {
-  try {
-    return await jwt.sign(payload as object, SECRET_TOKEN, {expiresIn});
-  } catch (error) {
-    throw error;
-  }
+  return await jwt.sign(payload as object, SECRET_TOKEN, {expiresIn});
 }
 
-export async function galidateSignature(token: string) {
+export async function validateSignature(token: string) {
   const payload = await jwt.verify(token, SECRET_TOKEN);
   return payload;
 }

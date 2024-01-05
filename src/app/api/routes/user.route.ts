@@ -1,5 +1,6 @@
 import * as KoaRouter from '@koa/router';
-import {signIn, signUp} from '../controllers/user.controller';
+import {getUserInfo, signIn, signUp} from '../controllers/user.controller';
+import {tokenMiddleware} from '../middlewares/token-middleware';
 
 const userRoute = new KoaRouter({
   prefix: '/user',
@@ -7,5 +8,6 @@ const userRoute = new KoaRouter({
 
 userRoute.post('/signup', signUp);
 userRoute.post('/signin', signIn);
+userRoute.get('/', tokenMiddleware, getUserInfo);
 
 export default userRoute;

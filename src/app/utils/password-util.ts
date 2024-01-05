@@ -12,7 +12,17 @@ export async function validatePassword(
   enteredPassword: string,
   savedPassword: string,
   salt: string
-) {
+): Promise<boolean> {
+  console.log('🚀 ~ file: password-util.ts:16 ~ salt:', salt);
+  console.log('🚀 ~ file: password-util.ts:16 ~ savedPassword:', savedPassword);
+  console.log(
+    '🚀 ~ file: password-util.ts:16 ~ enteredPassword:',
+    enteredPassword
+  );
   const hashedEnteredPassword = await generatePassword(enteredPassword, salt);
+  console.log(
+    '🚀 ~ file: password-util.ts:20 ~ hashedEnteredPassword:',
+    hashedEnteredPassword
+  );
   return hashedEnteredPassword === savedPassword;
 }

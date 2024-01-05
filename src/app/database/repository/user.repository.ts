@@ -1,3 +1,4 @@
+import {ObjectId} from 'mongodb';
 import {userModel} from '../models';
 
 type CreateUserParams = {
@@ -9,6 +10,10 @@ type CreateUserParams = {
 
 type findUserByEmailParams = {
   email: string;
+};
+
+type findUserByIdParams = {
+  id: ObjectId;
 };
 
 class UserRepository {
@@ -33,6 +38,26 @@ class UserRepository {
     const result = await this.modal.findOne({
       email,
     });
+    return result;
+  }
+
+  async isUserExistsWithEmail({email}: findUserByEmailParams) {
+    const result = await this.modal.findOne(
+      {
+        email,
+      },
+      {projection: {_id: 1}}
+    );
+    return Boolean(result);
+  }
+
+  async findUserById({id}: findUserByIdParams) {
+    const result = await this.modal.findOne(
+      {
+        _id: id,
+      },
+      {projection: {password: 0, salt: 0}}
+    );
     return result;
   }
 }

@@ -19,3 +19,4 @@ export const DATABASE = {
 };
 
 export const SECRET_TOKEN = env.JWT_SECRET_TOKEN!;
+export const LOGIN_TOKEN_LIFETIME = 6000;

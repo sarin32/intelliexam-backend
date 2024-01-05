@@ -1,4 +1,7 @@
+import {ObjectId} from 'mongodb';
+import {LOGIN_TOKEN_LIFETIME} from '../config/config';
 import {userRepository} from '../database';
+import {AuthorizationError, ConflictError} from '../errors';
 import {
   generatePassword,
   generateSalt,
@@ -17,12 +20,20 @@ type SignInParams = {
   password: string;
 };
 
+type getUserInfoParams = {
+  userId: string;
+};
+
 class UserService {
   private readonly repository = userRepository;
 
   async signup({email, name, password}: SignupParams) {
     const salt = await generateSalt();
     password = await generatePassword(password, salt);
+
+    const isUserExists = await this.repository.isUserExistsWithEmail({email});
+    if (isUserExists)
+      throw new ConflictError('An account with this email id already exists');
 
     const {userId} = await this.repository.createUser({
       email,
@@ -31,29 +42,44 @@ class UserService {
       salt,
     });
 
-    const token = await generateSignature({userId});
+    const payload = {
+      userId,
+    };
+    const token = await generateSignature(payload, LOGIN_TOKEN_LIFETIME);
+
     return {
       userId,
-      token,
+      token: `Bearer ${token}`,
     };
   }
 
   async signIn({email, password}: SignInParams) {
     const user = await this.repository.findUserByEmail({email});
-    if (!user) throw new Error('Invalid Credenials');
+    if (!user) throw new AuthorizationError('Invalid Credenials');
 
-    const isValidPassword = validatePassword(
+    const isValidPassword = await validatePassword(
       password,
       user.password,
       user.salt
     );
-    if (!isValidPassword) throw new Error('Invalid Credenials');
+    if (!isValidPassword) throw new AuthorizationError('Invalid Credenials');
 
-    const token = await generateSignature({userId: user._id});
+    const payload = {
+      userId: user._id,
+    };
+    const token = await generateSignature(payload, LOGIN_TOKEN_LIFETIME);
     return {
       userId: user._id,
-      token,
+      token: `Bearer ${token}`,
     };
+  }
+
+  async getUserInfo({userId}: getUserInfoParams) {
+    const user = await this.repository.findUserById({id: new ObjectId(userId)});
+
+    if (!user) throw new Error('Invalid user id');
+
+    return user;
   }
 }
 
