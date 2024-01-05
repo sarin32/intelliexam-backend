@@ -25,6 +25,7 @@ class UserRepository {
       name,
       password,
       salt,
+      created_at: new Date(),
     });
     if (!result.acknowledged) {
       throw new Error('Failed to create user');
