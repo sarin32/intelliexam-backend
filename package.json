@@ -6,7 +6,7 @@
     "build:prod": "tsc",
     "fix": "gts fix",
     "start:dev": "set NODE_ENV=dev&& nodemon src/index.ts",
-    "start:prod": "node build/index.js"
+    "start:prod": "node index.js"
   },
   "dependencies": {
     "@koa/bodyparser": "^5.0.0",
