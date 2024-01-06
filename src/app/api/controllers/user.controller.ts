@@ -24,8 +24,6 @@ const signInSchema = objectSchema({
 });
 
 export async function signUp(ctx: Context) {
-  console.log('heree');
-  
   const {error, value} = validateObject(signUpSchema, ctx.request.body);
 
   if (error) throw new BadRequestError(error.message);
