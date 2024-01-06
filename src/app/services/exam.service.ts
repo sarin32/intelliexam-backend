@@ -1,41 +1,48 @@
 import {ObjectId} from 'mongodb';
 import {examRepository} from '../database';
-import {BadRequestError} from '../errors';
+import {BadRequestError, ForbiddenError} from '../errors';
+import questionService from './question.service';
 
 type CreateExamParams = {
   name: string;
-  description: string;
-  createdBy: ObjectId;
+  description?: string;
+  userId: ObjectId;
 };
 
 type GetExamParams = {
   examId: string;
+  userId:string;
 };
 
 class ExamService {
   private readonly repository = examRepository;
 
-  async createExam({name, description, createdBy}: CreateExamParams) {
+  async createExam({name, description, userId}: CreateExamParams) {
     const {id} = await this.repository.createExam({
       name,
       description,
-      createdBy,
+      createdBy:userId,
     });
 
     return {
       examId: id,
       name,
       description,
-      createdBy,
+      userId,
     };
   }
 
-  async getExam({examId}: GetExamParams) {
+  async getExam({examId, userId}: GetExamParams) {
     const exam = await this.repository.findExamById({id: new ObjectId(examId)});
 
     if (!exam) {
       throw new BadRequestError('No exam found with the given id');
     }
+
+    if(exam.created_by.toString()!== userId)
+      throw new ForbiddenError('You dont have access to this resource');
+
+    exam.questions = await questionService.getQuestionsByExamId({examId: new ObjectId(examId)}) 
 
     return exam;
   }

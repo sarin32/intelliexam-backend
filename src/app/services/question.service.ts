@@ -10,11 +10,11 @@ type CreateQuestionParams = {
 };
 
 type GetQuestionParams = {
-  questionId: string;
+  questionId: ObjectId;
 };
 
 type UpdateQuestionParams = {
-  questionId: string;
+  questionId: ObjectId;
   question?: string;
   examId?: ObjectId;
   answer?: number;
@@ -48,7 +48,7 @@ class QuestionService {
 
   async getQuestion({questionId}: GetQuestionParams) {
     const question = await this.repository.findQuestionById({
-      id: new ObjectId(questionId),
+      id: questionId,
     });
 
     if (!question) {
@@ -68,7 +68,7 @@ class QuestionService {
     options,
   }: UpdateQuestionParams) {
     const updatedQuestion = await this.repository.updateQuestionById({
-      id: new ObjectId(questionId),
+      id: questionId,
       question,
       examId,
       answer,
@@ -82,15 +82,11 @@ class QuestionService {
     return updatedQuestion;
   }
 
-  async getQuestionsByExamId(examId: string) {
+  async getQuestionsByExamId({examId}:{ examId: ObjectId}) {
     const questions = await this.repository.findQuestionsByExamId({
-      examId: new ObjectId(examId),
+      examId: examId,
     });
-
-    if (!questions || questions.length === 0) {
-      throw new Error('No questions found for this exam');
-    }
-
+    
     return questions;
   }
 }

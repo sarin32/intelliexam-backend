@@ -1,9 +1,10 @@
 import {ObjectId} from 'mongodb';
 import {examModal} from '../models';
+import { ExamSchema } from '../models/exam.schema';
 
 type CreateExamParams = {
   name: string;
-  description: string;
+  description?: string;
   createdBy: ObjectId;
 };
 
@@ -15,12 +16,16 @@ class ExamRepository {
   private readonly modal = examModal;
 
   async createExam({name, description, createdBy}: CreateExamParams) {
-    const result = await this.modal.insertOne({
+    const exam:ExamSchema = {
       name,
       created_by: createdBy,
-      description,
       created_at: new Date(),
-    });
+    }
+    if(description){
+      exam.description = description
+    }
+    const result = await this.modal.insertOne(exam);
+
     if (!result.acknowledged) {
       throw new Error('Failed to create Exam');
     }

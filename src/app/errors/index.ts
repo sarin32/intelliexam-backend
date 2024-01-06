@@ -54,3 +54,15 @@ export class ConflictError extends BaseError {
     });
   }
 }
+
+
+export class ForbiddenError extends BaseError {
+  constructor(message: string, errorCode?: string) {
+    super({
+      message,
+      errorCode,
+      isToBeReported: false,
+      statusCode: HttpStatusCode.FORBIDDEN,
+    });
+  }
+}

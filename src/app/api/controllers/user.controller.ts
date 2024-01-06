@@ -41,7 +41,7 @@ export async function signIn(ctx: Context) {
   ctx.body = await userService.signIn({email, password});
 }
 
-export async function getUserInfo(ctx: Context) {
+export async function getSelfInfo(ctx: Context) {
   const {userId} = ctx.state.user;
 
   ctx.body = await userService.getUserInfo({userId});
