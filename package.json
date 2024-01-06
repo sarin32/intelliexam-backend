@@ -3,6 +3,7 @@
     "lint": "gts lint",
     "clean": "gts clean",
     "build": "tsc",
+    "build:prod": "tsc",
     "fix": "gts fix",
     "start:dev": "set NODE_ENV=dev&& nodemon src/index.ts"
   },
