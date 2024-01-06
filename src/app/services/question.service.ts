@@ -1,16 +1,18 @@
 import {ObjectId} from 'mongodb';
-import {questionRepository} from '../database';
-import {BadRequestError} from '../errors';
+import {examRepository, questionRepository} from '../database';
+import {BadRequestError, ForbiddenError} from '../errors';
 
 type CreateQuestionParams = {
   question: string;
   examId: ObjectId;
   answer: number;
   options: Array<string>;
+  userId: ObjectId;
 };
 
 type GetQuestionParams = {
   questionId: ObjectId;
+  userId: ObjectId;
 };
 
 type UpdateQuestionParams = {
@@ -23,13 +25,22 @@ type UpdateQuestionParams = {
 
 class QuestionService {
   private readonly repository = questionRepository;
+  private readonly examrepository = examRepository;
 
   async createQuestion({
     question,
     examId,
     answer,
     options,
+    userId,
   }: CreateQuestionParams) {
+    const exam = await examRepository.findExamById({id: examId});
+
+    if (!exam) throw new BadRequestError('No exam found with the given examId');
+
+    if (exam.created_by.toString() !== userId.toString())
+      throw new ForbiddenError('You dont have access to this exam');
+
     const {id} = await this.repository.createQuestion({
       question,
       examId,
@@ -46,7 +57,7 @@ class QuestionService {
     };
   }
 
-  async getQuestion({questionId}: GetQuestionParams) {
+  async getQuestion({questionId, userId}: GetQuestionParams) {
     const question = await this.repository.findQuestionById({
       id: questionId,
     });
@@ -82,11 +93,11 @@ class QuestionService {
     return updatedQuestion;
   }
 
-  async getQuestionsByExamId({examId}:{ examId: ObjectId}) {
+  async getQuestionsByExamId({examId}: {examId: ObjectId}) {
     const questions = await this.repository.findQuestionsByExamId({
       examId: examId,
     });
-    
+
     return questions;
   }
 }

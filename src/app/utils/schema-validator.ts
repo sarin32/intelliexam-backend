@@ -32,6 +32,10 @@ export function emailSchema() {
   return Joi.string().trim().email().required();
 }
 
+export function numberSchema() {
+  return Joi.number().required();
+}
+
 export function objectSchema<TSchema>({
   object,
   required = true,
@@ -40,6 +44,18 @@ export function objectSchema<TSchema>({
   required?: boolean;
 }) {
   let schema = Joi.object(object);
+  if (required) schema = schema.required();
+  return schema;
+}
+
+export function arraySchema<TSchema>({
+  object,
+  required = true,
+}: {
+  object: Joi.PartialSchemaMap<TSchema>;
+  required?: boolean;
+}) {
+  let schema = Joi.array().items(object);
   if (required) schema = schema.required();
   return schema;
 }

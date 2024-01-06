@@ -11,7 +11,7 @@ type CreateExamParams = {
 
 type GetExamParams = {
   examId: string;
-  userId:string;
+  userId: string;
 };
 
 class ExamService {
@@ -21,7 +21,7 @@ class ExamService {
     const {id} = await this.repository.createExam({
       name,
       description,
-      createdBy:userId,
+      createdBy: userId,
     });
 
     return {
@@ -39,10 +39,12 @@ class ExamService {
       throw new BadRequestError('No exam found with the given id');
     }
 
-    if(exam.created_by.toString()!== userId)
+    if (exam.created_by.toString() !== userId)
       throw new ForbiddenError('You dont have access to this resource');
 
-    exam.questions = await questionService.getQuestionsByExamId({examId: new ObjectId(examId)}) 
+    exam.questions = await questionService.getQuestionsByExamId({
+      examId: new ObjectId(examId),
+    });
 
     return exam;
   }

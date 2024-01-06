@@ -55,7 +55,6 @@ export class ConflictError extends BaseError {
   }
 }
 
-
 export class ForbiddenError extends BaseError {
   constructor(message: string, errorCode?: string) {
     super({

@@ -1,0 +1,11 @@
+
+POST  {{baseUrl}}/question/create HTTP/1.1
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "answer": 2,
+  "examId":"6599a1e00eabdc777a2e270a",
+  "options":["bad","good", "best"],
+  "question": "how is javascrpt"
+}

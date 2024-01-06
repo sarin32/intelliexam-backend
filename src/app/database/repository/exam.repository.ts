@@ -1,6 +1,6 @@
 import {ObjectId} from 'mongodb';
 import {examModal} from '../models';
-import { ExamSchema } from '../models/exam.schema';
+import {ExamSchema} from '../models/exam.schema';
 
 type CreateExamParams = {
   name: string;
@@ -16,13 +16,13 @@ class ExamRepository {
   private readonly modal = examModal;
 
   async createExam({name, description, createdBy}: CreateExamParams) {
-    const exam:ExamSchema = {
+    const exam: ExamSchema = {
       name,
       created_by: createdBy,
       created_at: new Date(),
-    }
-    if(description){
-      exam.description = description
+    };
+    if (description) {
+      exam.description = description;
     }
     const result = await this.modal.insertOne(exam);
 
