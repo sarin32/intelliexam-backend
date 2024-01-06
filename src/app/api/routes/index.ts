@@ -1,9 +1,11 @@
 import * as KoaRouter from '@koa/router';
-import userRoute from './user.route';
+import userRouter from './user.route';
+import examRouter from './exam.route';
 
 const router = new KoaRouter();
 
 // extend routes here
-router.use(userRoute.routes());
+router.use(userRouter.routes());
+router.use(examRouter.routes());
 
 export default router;

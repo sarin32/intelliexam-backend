@@ -1,5 +1,5 @@
 import {ObjectId} from 'mongodb';
-import {userModel} from '../models';
+import {userModal} from '../models';
 
 type CreateUserParams = {
   email: string;
@@ -17,7 +17,7 @@ type findUserByIdParams = {
 };
 
 class UserRepository {
-  private readonly modal = userModel;
+  private readonly modal = userModal;
 
   async createUser({email, name, password, salt}: CreateUserParams) {
     const result = await this.modal.insertOne({
@@ -31,7 +31,7 @@ class UserRepository {
       throw new Error('Failed to create user');
     }
     return {
-      userId: result.insertedId,
+      id: result.insertedId,
     };
   }
 

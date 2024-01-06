@@ -35,7 +35,7 @@ class UserService {
     if (isUserExists)
       throw new ConflictError('An account with this email id already exists');
 
-    const {userId} = await this.repository.createUser({
+    const {id} = await this.repository.createUser({
       email,
       name,
       password,
@@ -43,12 +43,12 @@ class UserService {
     });
 
     const payload = {
-      userId,
+      userId: id,
     };
     const token = await generateSignature(payload, LOGIN_TOKEN_LIFETIME);
 
     return {
-      userId,
+      userId: id,
       token: `Bearer ${token}`,
     };
   }

@@ -9,6 +9,15 @@ export async function generateSignature(
 }
 
 export async function validateSignature(token: string) {
-  const payload = await jwt.verify(token, SECRET_TOKEN);
-  return payload;
+  try {
+    const payload = await jwt.verify(token, SECRET_TOKEN);
+    return {payload};
+  } catch (error) {
+    if (error instanceof jwt.TokenExpiredError) {
+      return {tokenExpired: true};
+    } else if (error instanceof jwt.JsonWebTokenError) {
+      return {invalidToken: true};
+    }
+    throw error;
+  }
 }

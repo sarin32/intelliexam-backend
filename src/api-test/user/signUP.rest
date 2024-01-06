@@ -1,8 +1,8 @@
-POST http://localhost:3000/user/signup HTTP/1.1
+POST {{baseUrl}}/user/signup HTTP/1.1
 content-type: application/json
 
 {
-	"name":"  sarin ",
-	"password": "3456789987654",
-	"email": "sarin@gmail.com"
+	"name":"  xxx ",
+	"password": "{{password}}",
+	"email": "{{email}}"
 }

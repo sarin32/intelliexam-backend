@@ -1,9 +1,4 @@
 
-GET http://localhost:3000/user/ HTTP/1.1
+GET {{baseUrl}}/user/ HTTP/1.1
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTk4MjVhMjJhOWYzZmMwMGNiZDQ5NDYiLCJpYXQiOjE3MDQ0Njk5NjgsImV4cCI6MTcwNDQ3NTk2OH0.RlWHOpV9tI1ExF_UMUCFv8Xacsf0HzC9__OENrpqKe8
-
-{
-	"password": "3456789987654",
-	"email": "sarin@gmail.com"
-}
+Authorization: {{token}}
