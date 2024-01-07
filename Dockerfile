@@ -35,4 +35,4 @@ ENV PORT=3000
 EXPOSE $PORT
 
 # Set the command to start the application
-CMD ["npm", "start:prod"]
+CMD ["npm","run", "start:prod"]
