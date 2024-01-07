@@ -22,4 +22,4 @@ jobs:
         working-directory: ./
 
       - name: Push Docker image to GHCR
-        run: docker push ghcr.io/${{ github.repository }}/my-image:latest
+        run: docker push ghcr.io/${{ github.repository }}/intelli-exam-backend:latest
