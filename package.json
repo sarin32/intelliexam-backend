@@ -2,11 +2,14 @@
   "scripts": {
     "lint": "gts lint",
     "clean": "gts clean",
+    "fix": "gts fix",
     "build:dev": "tsc",
     "build:prod": "tsc",
-    "fix": "gts fix",
     "start:dev": "set NODE_ENV=dev&& nodemon src/index.ts",
     "start:prod": "node build/src/index.js"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "dependencies": {
     "@koa/bodyparser": "^5.0.0",

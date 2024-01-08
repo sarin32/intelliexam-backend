@@ -32,8 +32,18 @@ export function emailSchema() {
   return Joi.string().trim().email().required();
 }
 
-export function numberSchema() {
+export function requiredNumberSchema() {
   return Joi.number().required();
+}
+
+export function numberSchema() {
+  return Joi.number();
+}
+
+export function objectIdSchema(required = false) {
+  let schema = Joi.string().pattern(/^[0-9a-fA-F]{24}$/);
+  if (required) schema = schema.required();
+  return schema;
 }
 
 export function objectSchema<TSchema>({

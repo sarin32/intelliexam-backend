@@ -4,5 +4,5 @@ content-type: application/json
 Authorization: {{token}}
 
 {
-  "examId": "6599a1e00eabdc777a2e270a"
+  "examId": "659c4a3923ba2e9c1d3cbf0e"
 }

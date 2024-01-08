@@ -1,49 +1,41 @@
 import {ObjectId} from 'mongodb';
-import {examRepository, questionRepository} from '../database';
-import {BadRequestError, ForbiddenError} from '../errors';
+import {questionRepository} from '../database';
+import {BadRequestError} from '../errors';
+import examService from './exam.service';
 
 type CreateQuestionParams = {
   question: string;
-  examId: ObjectId;
+  examId: string | ObjectId;
   answer: number;
   options: Array<string>;
-  userId: ObjectId;
+  userId: string | ObjectId;
 };
 
 type GetQuestionParams = {
-  questionId: ObjectId;
-  userId: ObjectId;
+  questionId: string | ObjectId;
 };
 
 type UpdateQuestionParams = {
-  questionId: ObjectId;
+  questionId: string | ObjectId;
   question?: string;
-  examId?: ObjectId;
   answer?: number;
   options?: Array<string>;
 };
 
 class QuestionService {
   private readonly repository = questionRepository;
-  private readonly examrepository = examRepository;
 
   async createQuestion({
     question,
     examId,
     answer,
     options,
-    userId,
   }: CreateQuestionParams) {
-    const exam = await examRepository.findExamById({id: examId});
-
-    if (!exam) throw new BadRequestError('No exam found with the given examId');
-
-    if (exam.created_by.toString() !== userId.toString())
-      throw new ForbiddenError('You dont have access to this exam');
-
+    if (!this.isValidAnswerAndOption(options, answer))
+      throw new BadRequestError('Invalid answer value');
     const {id} = await this.repository.createQuestion({
       question,
-      examId,
+      examId: new ObjectId(examId),
       answer,
       options,
     });
@@ -57,9 +49,9 @@ class QuestionService {
     };
   }
 
-  async getQuestion({questionId, userId}: GetQuestionParams) {
+  async getQuestion({questionId}: GetQuestionParams) {
     const question = await this.repository.findQuestionById({
-      id: questionId,
+      id: new ObjectId(questionId),
     });
 
     if (!question) {
@@ -74,21 +66,30 @@ class QuestionService {
   async updateQuestion({
     questionId,
     question,
-    examId,
     answer,
     options,
   }: UpdateQuestionParams) {
+    const currentQuestion = await this.repository.findQuestionById({
+      id: new ObjectId(questionId),
+    });
+    if (!currentQuestion) throw new Error('Question not found');
+
+    if (
+      !this.isValidAnswerAndOption(
+        options || currentQuestion.options,
+        answer || currentQuestion.answer
+      )
+    )
+      throw new BadRequestError(
+        'The answer and options does not match each other'
+      );
+
     const updatedQuestion = await this.repository.updateQuestionById({
-      id: questionId,
+      id: new ObjectId(questionId),
       question,
-      examId,
       answer,
       options,
     });
-
-    if (!updatedQuestion) {
-      throw new Error('Failed to update question');
-    }
 
     return updatedQuestion;
   }
@@ -99,6 +100,32 @@ class QuestionService {
     });
 
     return questions;
+  }
+
+  isValidAnswerAndOption(options: Array<string>, answer: number) {
+    return answer >= 0 && answer < options.length;
+  }
+
+  async hasAccessToQuestion({
+    examId,
+    questionId,
+    userId,
+  }: {
+    examId: string | ObjectId;
+    questionId: string | ObjectId;
+    userId: string | ObjectId;
+  }) {
+    if (await examService.hasAccessToExam({examId, userId})) {
+      if (
+        await this.repository.findQuestion({
+          examId: new ObjectId(examId),
+          id: new ObjectId(questionId),
+        })
+      ) {
+        return true;
+      }
+    }
+    return false;
   }
 }
 

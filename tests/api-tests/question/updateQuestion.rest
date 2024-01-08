@@ -1,0 +1,10 @@
+
+POST  {{baseUrl}}/question/updateDetails HTTP/1.1
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "examId":"659c4a3923ba2e9c1d3cbf0e",
+  "questionId": "659c4ba1deae9a56d727cbf7",
+  "answer":1
+}

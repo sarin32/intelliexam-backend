@@ -1,4 +1,4 @@
-import {ObjectId} from 'mongodb';
+import {ObjectId, Filter} from 'mongodb';
 import {examModal} from '../models';
 import {ExamSchema} from '../models/exam.schema';
 
@@ -10,6 +10,10 @@ type CreateExamParams = {
 
 type findExamByIdParams = {
   id: ObjectId;
+};
+type findExamParams = {
+  id: ObjectId;
+  createdBy?: ObjectId;
 };
 
 class ExamRepository {
@@ -39,6 +43,20 @@ class ExamRepository {
       _id: id,
     });
     return result;
+  }
+
+  async findExam({id, createdBy}: findExamParams) {
+    const query: Filter<ExamSchema> = {_id: id};
+    if (createdBy) query.created_by = createdBy;
+    const result = await this.modal.findOne(query);
+    return result;
+  }
+
+  async examExists({id, createdBy}: findExamParams) {
+    const query: Filter<ExamSchema> = {_id: id};
+    if (createdBy) query.created_by = createdBy;
+    const result = await this.modal.findOne(query, {projection: {_id: 1}});
+    return Boolean(result);
   }
 }
 

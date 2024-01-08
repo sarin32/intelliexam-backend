@@ -30,6 +30,7 @@ export class Server {
   public async listen() {
     await connection.startConnecion();
     console.log('ESTABLISHED DATABASE CONNECTION');
+
     this.app.listen(PORT, () => {
       console.log('APP IS RUNNING ON PORT ', PORT);
     });
