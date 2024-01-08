@@ -18,8 +18,8 @@ jobs:
         run: docker login --username ${{github.actor}} --password ${{secrets.GH_PAT}} ghcr.io
 
       - name: Build the Docker image
-        run: docker build -t ghcr.io/${{ github.repository }}/intelli-exam-backend:latest .
+        run: docker build -t ghcr.io/${{ github.repository }}:latest .
         working-directory: ./
 
       - name: Push Docker image to GHCR
-        run: docker push ghcr.io/${{ github.repository }}/intelli-exam-backend:latest
+        run: docker push ghcr.io/${{ github.repository }}:latest
