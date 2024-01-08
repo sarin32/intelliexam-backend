@@ -13,6 +13,11 @@ type findQuestionByIdParams = {
   id: ObjectId;
 };
 
+type findQuestionParams = {
+  id: ObjectId;
+  examId: ObjectId;
+};
+
 type UpdateQuestionParams = {
   id: ObjectId;
   question?: string;
@@ -62,6 +67,14 @@ class QuestionRepository {
     return result;
   }
 
+  async findQuestion({id, examId}: findQuestionParams) {
+    const result = await this.modal.findOne({
+      _id: id,
+      exam_id: examId,
+    });
+    return result;
+  }
+
   async updateQuestionById({
     id,
     question,
@@ -99,9 +112,7 @@ class QuestionRepository {
       throw new Error('Failed to update question');
     }
 
-    return {
-      result,
-    };
+    return result;
   }
 
   async findQuestionsByExamId({examId}: {examId: ObjectId}) {

@@ -1,16 +1,16 @@
 import {Context} from 'koa';
 import {
+  objectIdSchema,
   objectSchema,
   stringSchema,
   validateObject,
 } from '../../utils/schema-validator';
-import {BadRequestError} from '../../errors';
-import {ObjectId} from 'mongodb';
+import {BadRequestError, ForbiddenError} from '../../errors';
 import examService from '../../services/exam.service';
 
 const getExamSchema = objectSchema({
   object: {
-    examId: stringSchema({}),
+    examId: objectIdSchema(true),
   },
 });
 
@@ -28,7 +28,9 @@ export async function getExamDetails(ctx: Context) {
   if (error) throw new BadRequestError(error.message);
 
   const {examId} = value;
-  if (!ObjectId.isValid(examId)) throw new BadRequestError('Invalid examId');
+
+  if (!(await examService.hasAccessToExam({userId, examId})))
+    throw new ForbiddenError('You dont have access to this exam');
 
   ctx.body = await examService.getExam({userId, examId});
 }
