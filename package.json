@@ -6,7 +6,10 @@
     "build:dev": "tsc",
     "build:prod": "tsc",
     "start:dev": "set NODE_ENV=dev&& nodemon src/index.ts",
-    "start:prod": "node build/src/index.js"
+    "start:prod": "node src/index.js"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "engines": {
     "node": ">=20"

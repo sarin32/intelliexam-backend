@@ -16,7 +16,7 @@ FROM node:20-alpine AS final
 WORKDIR /app
 
 # Copy the built files from the 'builder' stage
-COPY --from=builder /app/build ./build
+COPY --from=builder /app/build .
 
 # Copy package.json and package-lock.json for production
 COPY package.json .
