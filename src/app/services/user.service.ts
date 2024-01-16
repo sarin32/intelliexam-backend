@@ -132,7 +132,7 @@ class UserService {
     if (verification.otp !== otp) throw new AuthorizationError('Invalid OTP');
 
     await this.repository.markUserAsVerified({userID: new ObjectId(userId)});
-    
+
     return {message: 'User email verified successfully'};
   }
 
