@@ -1,11 +1,11 @@
 import {Document, MongoClient} from 'mongodb';
-import {DATABASE} from '../config/config';
+import {DATABASE_SETTINGS} from '../config/config';
 
 class Connection {
   private client: MongoClient;
 
   constructor() {
-    this.client = new MongoClient(DATABASE.URL, {});
+    this.client = new MongoClient(DATABASE_SETTINGS.URL, {});
   }
 
   public async startConnecion() {
@@ -14,7 +14,7 @@ class Connection {
 
   public getCollection<DocumentT extends Document>(collectionName: string) {
     return this.client
-      .db(DATABASE.DATABASE_NAME)
+      .db(DATABASE_SETTINGS.DATABASE_NAME)
       .collection<DocumentT>(collectionName);
   }
 }

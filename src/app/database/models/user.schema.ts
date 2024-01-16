@@ -6,4 +6,5 @@ export interface UserSchema extends Document {
   password: string;
   salt: string;
   created_at: Date;
+  isVerififed: Boolean;
 }
