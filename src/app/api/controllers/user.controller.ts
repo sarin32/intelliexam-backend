@@ -23,6 +23,12 @@ const signInSchema = objectSchema({
   },
 });
 
+const verifyEmailVerificationOTPSchema = objectSchema({
+  object: {
+    otp: stringSchema({min: 6, max: 6}),
+  },
+});
+
 export async function signUp(ctx: Context) {
   const {error, value} = validateObject(signUpSchema, ctx.request.body);
 
@@ -44,6 +50,20 @@ export async function signIn(ctx: Context) {
 export async function sendEmailForVerification(ctx: Context) {
   const {userId} = ctx.state.user;
   ctx.body = await userService.sendEmailForVerification({userId});
+}
+
+export async function verifyEmailVerificationOTP(ctx: Context) {
+  const {error, value} = validateObject(
+    verifyEmailVerificationOTPSchema,
+    ctx.request.body
+  );
+
+  if (error) throw new BadRequestError(error.message);
+
+  const {userId} = ctx.state.user;
+  const {otp} = value;
+
+  ctx.body = await userService.verifyEmailVerificationOTP({userId, otp});
 }
 
 export async function getSelfInfo(ctx: Context) {

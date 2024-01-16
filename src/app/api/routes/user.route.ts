@@ -4,6 +4,7 @@ import {
   sendEmailForVerification,
   signIn,
   signUp,
+  verifyEmailVerificationOTP,
 } from '../controllers/user.controller';
 import {tokenMiddleware} from '../middlewares/token-middleware';
 
@@ -12,12 +13,21 @@ const router = new KoaRouter({
 });
 
 router.post('/signup', signUp);
+
 router.post(
   '/sendEmailForVerification',
   tokenMiddleware,
   sendEmailForVerification
 );
+
+router.post(
+  '/verifyEmailVerificationOTP',
+  tokenMiddleware,
+  verifyEmailVerificationOTP
+);
+
 router.post('/signin', signIn);
+
 router.post('/getSelfInfo', tokenMiddleware, getSelfInfo);
 
 export default router;
