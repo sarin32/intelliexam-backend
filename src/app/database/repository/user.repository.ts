@@ -26,6 +26,7 @@ class UserRepository {
       password,
       salt,
       created_at: new Date(),
+      isVerififed: false,
     });
     if (!result.acknowledged) {
       throw new Error('Failed to create user');
@@ -46,6 +47,7 @@ class UserRepository {
     const result = await this.modal.findOne(
       {
         email,
+        isVerififed: false,
       },
       {projection: {_id: 1}}
     );

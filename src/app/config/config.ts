@@ -11,7 +11,7 @@ const env = process.env;
 
 export const PORT = Number(env.PORT!);
 
-export const DATABASE = {
+export const DATABASE_SETTINGS = {
   URL: env.DATABASE_URL!,
   DATABASE_NAME: env.DATABASE_NAME!,
   MASTER_KEY: env.DATABASE_MASTER_KEY!,
@@ -20,3 +20,9 @@ export const DATABASE = {
 
 export const SECRET_TOKEN = env.JWT_SECRET_TOKEN!;
 export const LOGIN_TOKEN_LIFETIME = 6000;
+
+export const EMAIL_SETTINGS = {
+  SERVICE_PROVIDER: 'gmail',
+  USER_ID: env.EMAIL_USER_ID,
+  PASSWORD: env.EMAIL_PASSWORD,
+};
