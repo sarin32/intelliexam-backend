@@ -18,6 +18,9 @@ WORKDIR /app
 # Copy the built files from the 'builder' stage
 COPY --from=builder /app/build .
 
+# Copy assets folder from root to src
+COPY src/assets ./src/assets
+
 # Copy package.json and package-lock.json for production
 COPY package.json .
 COPY package-lock.json .
