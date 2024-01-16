@@ -114,6 +114,28 @@ class UserService {
     }
   }
 
+  async verifyEmailVerificationOTP({
+    otp,
+    userId,
+  }: {
+    otp: string;
+    userId: string | ObjectId;
+  }) {
+    const verification =
+      await this.emailVerificationRepository.getEmailVerification({
+        userId: new ObjectId(userId),
+      });
+
+    if (!verification)
+      throw new ConflictError('No verification process has been initiated');
+
+    if (verification.otp !== otp) throw new AuthorizationError('Invalid OTP');
+
+    await this.repository.markUserAsVerified({userID: new ObjectId(userId)});
+    
+    return {message: 'User email verified successfully'};
+  }
+
   private async sendEmailVerificationEmail({
     otp,
     emailId,

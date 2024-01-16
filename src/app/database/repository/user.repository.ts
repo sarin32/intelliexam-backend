@@ -26,7 +26,7 @@ class UserRepository {
       password,
       salt,
       created_at: new Date(),
-      isVerififed: false,
+      is_verified: false,
     });
     if (!result.acknowledged) {
       throw new Error('Failed to create user');
@@ -47,7 +47,7 @@ class UserRepository {
     const result = await this.modal.findOne(
       {
         email,
-        isVerififed: false,
+        is_verified: true,
       },
       {projection: {_id: 1}}
     );
@@ -62,6 +62,13 @@ class UserRepository {
       {projection: {password: 0, salt: 0}}
     );
     return result;
+  }
+
+  async markUserAsVerified({userID}: {userID: ObjectId}) {
+    return await this.modal.findOneAndUpdate(
+      {_id: userID},
+      {$set: {is_verified: true}}
+    );
   }
 }
 
