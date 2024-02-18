@@ -1,10 +1,9 @@
 import * as Koa from 'koa';
 import {bodyParser} from '@koa/bodyparser';
 import * as cors from '@koa/cors';
-import {PORT} from './config/config';
-import {router} from './api';
-import {errorMiddleware} from './api/middlewares/error-handler.middleware';
-import {connection} from './database';
+import {PORT} from '../config/config';
+import {errorMiddleware, router} from '../api';
+import {connection} from '../database';
 
 export class Server {
   app: Koa<Koa.DefaultState, Koa.DefaultContext>;
