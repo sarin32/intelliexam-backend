@@ -1,8 +1,7 @@
 {
   "scripts": {
-    "lint": "gts lint",
-    "clean": "gts clean",
-    "fix": "gts fix",
+    "lint": "eslint .",
+    "fix": "eslint --fix .",
 
     "build:dev": "tsc",
     "build:prod": "tsc",
@@ -18,7 +17,6 @@
     "@koa/cors": "^5.0.0",
     "@koa/router": "^12.0.1",
     "bcrypt": "^5.1.1",
-    "dotenv": "^16.3.1",
     "handlebars": "^4.7.8",
     "joi": "^17.11.0",
     "jsonwebtoken": "^9.0.2",
@@ -37,7 +35,6 @@
     "@types/koa__router": "^12.0.4",
     "@types/node": "20.8.2",
     "@types/nodemailer": "^6.4.14",
-    "gts": "^5.2.0",
     "nodemon": "^3.0.2",
     "ts-node": "^10.9.2",
     "typescript": "~5.2.0"

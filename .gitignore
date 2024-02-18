@@ -2,3 +2,4 @@
 /src/environments/*.env
 /build
 .vscode/settings.json
+.infisical.json
