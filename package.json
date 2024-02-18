@@ -3,13 +3,12 @@
     "lint": "gts lint",
     "clean": "gts clean",
     "fix": "gts fix",
+
     "build:dev": "tsc",
     "build:prod": "tsc",
-    "start:dev": "set NODE_ENV=dev&& nodemon src/index.ts",
-    "start:prod": "node src/index.js"
-  },
-  "engines": {
-    "node": ">=20"
+
+    "start:dev": "infisical run --env=dev --path=/ -- nodemon src/index.ts",
+    "start:prod": "infisical run --env=prod --path=/ -- node src/index.js"
   },
   "engines": {
     "node": ">=20"
