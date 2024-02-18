@@ -1,5 +1,5 @@
 import * as KoaRouter from '@koa/router';
-import {tokenMiddleware} from '../middlewares/token-middleware';
+import {tokenMiddleware} from '../middlewares';
 import {
   createQuestion,
   getQuestionDetails,

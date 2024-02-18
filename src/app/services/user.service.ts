@@ -6,15 +6,15 @@ import {
 } from '../config/constants';
 import {emailVerficationRepository, userRepository} from '../database';
 import {AuthorizationError, ConflictError, ForbiddenError} from '../errors';
+import emailUtil from '../utils/email-util';
 import {
   generatePassword,
   generateSalt,
   validatePassword,
 } from '../utils/password-util';
-import {generateSignature} from '../utils/token-util';
-import emailUtil from '../utils/email-util';
 import {generateRandomString} from '../utils/string-util';
 import {generateTemplate} from '../utils/template-util';
+import {generateSignature} from '../utils/token-util';
 
 type SignupParams = {
   email: string;
