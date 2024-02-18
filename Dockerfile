@@ -33,9 +33,6 @@ RUN apk add --no-cache bash curl && curl -1sLf \
 'https://dl.cloudsmith.io/public/infisical/infisical-cli/setup.alpine.sh' | bash \
 && apk add infisical
 
-# Set NODE_ENV as prod
-ENV NODE_ENV=prod
-
 # Set the default port as an environment variable
 ENV PORT=3000
 
@@ -43,4 +40,4 @@ ENV PORT=3000
 EXPOSE $PORT
 
 # Set the command to start the application
-CMD ["npm","run", "start:$NODE_ENV"]
+CMD ["npm","run", "start:prod"]

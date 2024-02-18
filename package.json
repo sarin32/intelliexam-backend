@@ -8,7 +8,7 @@
     "build:prod": "tsc",
 
     "start:dev": "infisical run --env=dev --path=/ -- nodemon src/index.ts",
-    "start:prod": "infisical run --env=prod --path=/ -- node src/index.js"
+    "start:prod": "infisical run -- node src/index.js"
   },
   "engines": {
     "node": ">=20"
